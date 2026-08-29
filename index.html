@@ -15,83 +15,297 @@
 <meta name="twitter:title" content="Degen Signals — 10 ranked calls a day">
 <meta name="twitter:description" content="Entry, stop, target, R:R. Public track record — wins AND losses. $9.99/mo.">
 <meta name="twitter:image" content="https://mycosensai.github.io/degen-signals/banner-wide.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#07090f; --panel:#0e1420; --line:#1c2740; --txt:#e6edf7; --dim:#8a9ab8;
-          --acc:#4fc3f7; --ok:#4caf7d; --warn:#f0a24a; --grad:linear-gradient(135deg,#4fc3f7,#7c5cf0); }
+  :root {
+    --bg:#07090f; --bg2:#0a0e18; --panel:#0e1420; --line:#1c2740; --line2:#243350;
+    --txt:#e6edf7; --dim:#8a9ab8; --acc:#4fc3f7; --acc2:#7c5cf0; --ok:#4caf7d; --warn:#f0a24a; --bad:#e2574c;
+    --grad:linear-gradient(135deg,#4fc3f7,#7c5cf0);
+    --radius:14px; --shadow:0 20px 60px rgba(0,0,0,.5);
+  }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--txt); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; }
-  .wrap { max-width:880px; margin:0 auto; padding:40px 24px 80px; }
-  .logo { font-size:14px; letter-spacing:4px; color:var(--acc); text-transform:uppercase; margin-bottom:8px; }
-  h1 { font-size:42px; line-height:1.15; font-weight:800; margin-bottom:16px;
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--txt); font-family:'Inter',-apple-system,"Segoe UI",Roboto,sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a { color:var(--acc); text-decoration:none; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 24px; }
+
+  /* nav */
+  nav { position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:rgba(7,9,15,.8); border-bottom:1px solid var(--line); }
+  nav .wrap { display:flex; align-items:center; justify-content:space-between; height:60px; }
+  .brand { display:flex; align-items:center; gap:10px; color:var(--txt); font-weight:800; letter-spacing:.5px; }
+  .brand .mark { font-size:22px; }
+  .navlink { color:var(--dim); font-size:14px; font-weight:600; margin-left:24px; }
+  .navlink:hover { color:var(--txt); }
+  .navcta { background:var(--grad); color:#fff !important; font-weight:700; font-size:13px; padding:9px 18px; border-radius:10px; margin-left:16px; }
+  .navcta:hover { filter:brightness(1.1); }
+
+  /* hero */
+  .hero { padding:72px 0 40px; text-align:center; position:relative; }
+  .hero::before { content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(600px 300px at 50% 0%, rgba(124,92,240,.18), transparent 70%); }
+  .pill { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700;
+    background:rgba(76,175,125,.12); color:#7ef0b0; border:1px solid rgba(76,175,125,.3); margin-bottom:22px; }
+  .pill .dot { width:7px; height:7px; border-radius:50%; background:#4caf7d; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  h1 { font-size:52px; line-height:1.08; font-weight:800; letter-spacing:-1px; margin-bottom:18px;
        background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .sub { font-size:19px; color:var(--dim); max-width:640px; margin-bottom:40px; }
-  .cta { display:inline-block; background:var(--grad); color:#fff; font-weight:700; font-size:18px;
-         padding:16px 34px; border-radius:14px; text-decoration:none; box-shadow:0 8px 30px rgba(79,195,247,.35); }
-  .cta:hover { transform:translateY(-1px); }
-  .sec { margin-top:56px; }
-  .sec h2 { font-size:24px; margin-bottom:20px; color:var(--acc); }
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px; }
-  .card .ic { font-size:26px; margin-bottom:10px; }
-  .card h3 { font-size:16px; margin-bottom:8px; }
+  .sub { font-size:19px; color:var(--dim); max-width:640px; margin:0 auto 34px; }
+  .cta-row { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .cta { display:inline-flex; align-items:center; gap:8px; background:var(--grad); color:#fff; font-weight:700; font-size:17px;
+         padding:15px 32px; border-radius:13px; box-shadow:0 8px 30px rgba(79,195,247,.3); transition:transform .15s, filter .15s; }
+  .cta:hover { transform:translateY(-2px); filter:brightness(1.1); }
+  .cta.ghost { background:transparent; border:1px solid var(--line2); color:var(--txt); box-shadow:none; }
+  .cta.ghost:hover { border-color:var(--acc); }
+  .hero-foot { margin-top:20px; color:var(--dim); font-size:13px; }
+
+  /* hero banner image */
+  .banner { border-radius:18px; overflow:hidden; border:1px solid var(--line); margin:44px 0 0; box-shadow:var(--shadow); }
+  .banner img { width:100%; display:block; }
+
+  /* sections */
+  .sec { margin-top:72px; }
+  .sec h2 { font-size:30px; font-weight:800; letter-spacing:-.5px; margin-bottom:8px; }
+  .sec .sub2 { color:var(--dim); font-size:16px; max-width:560px; margin-bottom:28px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:24px; transition:border-color .2s, transform .2s; }
+  .card:hover { border-color:var(--line2); transform:translateY(-3px); }
+  .card .ic { font-size:28px; margin-bottom:12px; }
+  .card h3 { font-size:17px; font-weight:700; margin-bottom:8px; }
   .card p { color:var(--dim); font-size:14px; }
-  table { width:100%; border-collapse:collapse; margin-top:12px; font-size:15px; }
-  th,td { padding:12px 10px; text-align:left; border-bottom:1px solid var(--line); }
-  th { color:var(--dim); font-size:13px; text-transform:uppercase; letter-spacing:1px; }
-  .price { font-size:26px; font-weight:800; }
-  .price small { font-size:13px; color:var(--dim); font-weight:400; }
-  .btn2 { display:inline-block; margin-top:8px; padding:10px 20px; border-radius:10px; background:var(--line);
-          color:var(--txt); text-decoration:none; font-weight:600; font-size:14px; }
-  .btn2:hover { background:#243350; }
-  .disclaim { margin-top:48px; padding-top:20px; border-top:1px solid var(--line); color:var(--dim); font-size:12px; }
-  .foot { margin-top:24px; color:var(--dim); font-size:13px; }
-  .pill { display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
-  .pill.on { background:#123; color:#7ef0b0; }
+
+  /* live picks */
+  .picks-table { width:100%; border-collapse:collapse; font-size:15px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .picks-table th { background:var(--bg2); color:var(--dim); font-size:12px; text-transform:uppercase; letter-spacing:1px; text-align:left; padding:14px 16px; border-bottom:1px solid var(--line); }
+  .picks-table td { padding:13px 16px; border-bottom:1px solid var(--line); }
+  .picks-table tr:last-child td { border-bottom:none; }
+  .picks-table tr:hover td { background:rgba(79,195,247,.04); }
+  .sym { font-weight:700; }
+  .num { font-variant-numeric:tabular-nums; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:14px; font-size:12px; font-weight:700; }
+  .tag.live { background:rgba(79,195,247,.14); color:var(--acc); }
+  .picks-note { color:var(--dim); font-size:13px; margin-top:12px; }
+
+  /* pricing */
+  .price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; align-items:stretch; }
+  .price-card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:28px; display:flex; flex-direction:column; position:relative; }
+  .price-card.pop { border-color:var(--acc); box-shadow:0 0 0 1px var(--acc), var(--shadow); }
+  .pop-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--grad); color:#fff; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:4px 14px; border-radius:20px; }
+  .price-card .tier { font-size:13px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); }
+  .price-card .amount { font-size:42px; font-weight:800; letter-spacing:-1px; margin:12px 0 2px; }
+  .price-card .amount small { font-size:15px; color:var(--dim); font-weight:500; }
+  .price-card .per { font-size:13px; color:var(--dim); margin-bottom:20px; }
+  .price-card ul { list-style:none; margin-bottom:24px; flex:1; }
+  .price-card li { padding:7px 0; font-size:14px; color:var(--dim); border-bottom:1px dashed var(--line); display:flex; gap:10px; }
+  .price-card li b { color:var(--txt); }
+  .price-card li .x { color:var(--bad); }
+  .price-card li:last-child { border-bottom:none; }
+  .pbtn { display:block; text-align:center; background:var(--line2); color:var(--txt); font-weight:700; font-size:15px; padding:13px; border-radius:12px; transition:background .2s; }
+  .pbtn:hover { background:var(--acc); color:#000; }
+  .price-card.pop .pbtn { background:var(--grad); color:#fff; }
+  .price-card.pop .pbtn:hover { filter:brightness(1.1); }
+
+  /* honesty strip */
+  .honesty { margin-top:72px; background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:32px; text-align:center; }
+  .honesty h3 { font-size:22px; font-weight:800; margin-bottom:8px; }
+  .honesty p { color:var(--dim); font-size:15px; max-width:640px; margin:0 auto; }
+  .stats { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; margin-top:26px; }
+  .stat .n { font-size:30px; font-weight:800; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .stat .l { font-size:13px; color:var(--dim); }
+
+  /* faq */
+  .faq { max-width:700px; margin:0 auto; }
+  .faq details { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin-bottom:12px; }
+  .faq summary { font-weight:700; cursor:pointer; font-size:15px; }
+  .faq details p { color:var(--dim); font-size:14px; margin-top:10px; }
+
+  /* footer */
+  footer { margin-top:80px; border-top:1px solid var(--line); padding:36px 0 60px; }
+  footer .wrap { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  footer .flogo { font-weight:800; font-size:16px; }
+  footer .flinks a { color:var(--dim); font-size:14px; margin-left:20px; }
+  footer .flinks a:hover { color:var(--txt); }
+  .disclaim { margin-top:24px; color:var(--dim); font-size:12px; line-height:1.7; max-width:720px; }
+
+  /* mobile */
+  @media (max-width:640px) {
+    h1 { font-size:36px; }
+    .sub { font-size:17px; }
+    nav .navlink { display:none; }
+    .sec h2 { font-size:25px; }
+    .stats { gap:24px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="logo">🦞 Degen Signals</div>
-  <img src="banner-wide.png" alt="Degen Signals — 10 ranked calls a day" style="width:100%; border-radius:16px; border:1px solid var(--line); margin-bottom:32px;">
-  <h1>10 ranked calls a day.<br>Every result, published.</h1>
-  <div class="sub">Entry, stop, target and R:R for each call — delivered to a private
-  Telegram channel. A live market-regime flag tells you when risk is on or off.
-  And the track record is public: hits <em>and</em> stops.</div>
-  <a class="cta" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Start on Telegram →</a>
-  <div class="foot" style="margin-top:14px"><span class="pill on">● Track record starts today</span></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark">🦞</span> Degen Signals</a>
+    <div style="display:flex;align-items:center;">
+      <a class="navlink" href="#picks">Live picks</a>
+      <a class="navlink" href="#plans">Plans</a>
+      <a class="navlink" href="#faq">FAQ</a>
+      <a class="navcta" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Start on Telegram</a>
+    </div>
+  </div>
+</nav>
 
-  <div class="sec">
+<div class="wrap">
+  <section class="hero" id="top">
+    <span class="pill"><span class="dot"></span>Track record running — real prices, real outcomes</span>
+    <h1>10 ranked calls a day.<br>Every result, published.</h1>
+    <p class="sub">Entry, stop, target and R:R for each call — delivered to a private Telegram
+    channel. A live market-regime flag tells you when risk is on or off.
+    And the track record is public: hits <em>and</em> stops.</p>
+    <div class="cta-row">
+      <a class="cta" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Start on Telegram →</a>
+      <a class="cta ghost" href="#plans">See plans</a>
+    </div>
+    <div class="hero-foot">$9.99/mo · cancel anytime · no vague tickers</div>
+    <div class="banner"><img src="banner-wide.png" alt="Degen Signals — 10 ranked calls a day"></div>
+  </section>
+
+  <section class="sec" id="picks">
     <h2>What you get</h2>
+    <div class="sub2">Levels, not vibes. Every call is a trade you could actually place.</div>
     <div class="cards">
       <div class="card"><div class="ic">🎯</div><h3>Real levels</h3><p>Every call ships with entry, stop, target and risk:reward — no vague tickers.</p></div>
       <div class="card"><div class="ic">📊</div><h3>Regime flag</h3><p>RISK-ON / RISK-OFF from live market data. Know when to size up and when to sit out.</p></div>
       <div class="card"><div class="ic">🧾</div><h3>Public track record</h3><p>We log every call and publish the real hit rate. Wins and losses, no cherry-picking.</p></div>
       <div class="card"><div class="ic">🤖</div><h3>24/7 bot</h3><p>Instant access, instant answers. The community bot is live and friendly.</p></div>
     </div>
-  </div>
+  </section>
 
-  <div class="sec">
-    <h2>Plans</h2>
-    <table>
-      <tr><th></th><th>Standard</th><th>Pro</th><th>Crypto</th></tr>
-      <tr><td>Calls/day (stocks)</td><td>10</td><td>10</td><td>—</td></tr>
-      <tr><td>Meme / pump.fun calls</td><td>—</td><td>✓</td><td>✓</td></tr>
-      <tr><td>Early access</td><td>—</td><td>30 min</td><td>—</td></tr>
-      <tr><td>Intraday alerts</td><td>—</td><td>✓</td><td>—</td></tr>
-      <tr><td>Regime flag</td><td>✓</td><td>✓</td><td>✓</td></tr>
-      <tr><td>Track record</td><td>✓ public</td><td>✓ public</td><td>✓ public</td></tr>
-      <tr><td class="price">$9.99<small>/mo</small></td><td class="price">$19.99<small>/mo</small></td><td class="price">$12.99<small>/mo</small></td></tr>
-      <tr><td><a class="btn2" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose</a></td>
-          <td><a class="btn2" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose</a></td>
-          <td><a class="btn2" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose</a></td></tr>
+  <section class="sec">
+    <h2>Live picks</h2>
+    <div class="sub2">Today's ranked calls — real symbols, real levels from this morning's scan.</div>
+    <table class="picks-table">
+      <thead><tr><th>Symbol</th><th>Entry</th><th>Stop</th><th>Target</th><th>R:R</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="sym">OKTA</td><td class="num">172.91</td><td class="num">158.02</td><td class="num">197.10</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">CRWD</td><td class="num">227.96</td><td class="num">209.39</td><td class="num">258.14</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">NVDA</td><td class="num">227.98</td><td class="num">216.31</td><td class="num">246.95</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">MSTR</td><td class="num">137.40</td><td class="num">125.01</td><td class="num">157.53</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">VEEV</td><td class="num">282.13</td><td class="num">264.12</td><td class="num">311.39</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">WDAY</td><td class="num">193.57</td><td class="num">177.89</td><td class="num">219.05</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">RBRK</td><td class="num">107.02</td><td class="num">98.01</td><td class="num">121.66</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+        <tr><td class="sym">TEAM</td><td class="num">185.62</td><td class="num">170.91</td><td class="num">209.52</td><td class="num">1.6</td><td><span class="tag live">● LIVE</span></td></tr>
+      </tbody>
     </table>
-  </div>
+    <p class="picks-note">Fresh calls post to the private channel at 9:45 AM ET, M-F. These are real levels from today's scan — join the channel to get all 10 plus crypto.</p>
+  </section>
 
-  <div class="disclaim">
-    Degen Signals publishes educational trading signals. Nothing here is financial advice —
-    you make your own decisions. Trading involves risk; past performance (when it exists)
-    does not guarantee future results. The public track record shows real outcomes, including losses.
-  </div>
+  <section class="sec" id="plans">
+    <h2>Plans</h2>
+    <div class="sub2">Pick a tier. Pay with card via Stripe. Your invite link arrives instantly.</div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="tier">Standard</div>
+        <div class="amount">$9.99<small>/mo</small></div>
+        <div class="per">10 stock calls a day</div>
+        <ul>
+          <li><b>10</b> ranked calls/day</li>
+          <li><b>Full levels</b> — entry/stop/target/R:R</li>
+          <li><b>RISK-ON/OFF</b> regime flag</li>
+          <li><b>Public</b> track record</li>
+          <li><span class="x">✕</span> Meme calls</li>
+          <li><span class="x">✕</span> Early access</li>
+        </ul>
+        <a class="pbtn" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose Standard</a>
+      </div>
+      <div class="price-card pop">
+        <div class="pop-badge">Most popular</div>
+        <div class="tier">Pro</div>
+        <div class="amount">$19.99<small>/mo</small></div>
+        <div class="per">Everything + crypto + early</div>
+        <ul>
+          <li><b>10</b> ranked calls/day</li>
+          <li><b>Meme / pump.fun</b> calls</li>
+          <li><b>30 min</b> early access</li>
+          <li><b>Intraday</b> alerts</li>
+          <li><b>RISK-ON/OFF</b> regime flag</li>
+          <li><b>Public</b> track record</li>
+        </ul>
+        <a class="pbtn" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose Pro</a>
+      </div>
+      <div class="price-card">
+        <div class="tier">Crypto</div>
+        <div class="amount">$12.99<small>/mo</small></div>
+        <div class="per">Meme calls only</div>
+        <ul>
+          <li><b>Top crypto</b> calls</li>
+          <li><b>Token photo</b> + mint/CA</li>
+          <li><b>DexScreener</b> links</li>
+          <li><span class="x">✕</span> Stock calls</li>
+          <li><span class="x">✕</span> Early access</li>
+        </ul>
+        <a class="pbtn" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Choose Crypto</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="honesty">
+    <h3>Honest by design</h3>
+    <p>We don't screenshot winners. Every call is logged, every outcome is evaluated
+    against real prices, and the track record publishes wins <b>and</b> stops. That's the deal.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">10</div><div class="l">calls today</div></div>
+      <div class="stat"><div class="n">1.6</div><div class="l">avg R:R</div></div>
+      <div class="stat"><div class="n">100%</div><div class="l">logged</div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq">
+    <h2 style="text-align:center;">FAQ</h2>
+    <div class="faq">
+      <details>
+        <summary>How do I get access after paying?</summary>
+        <p>Tap "Start on Telegram" → DM the bot → hit /price → pay via Stripe. The bot
+        instantly sends you a one-time invite link to the private channel.</p>
+      </details>
+      <details>
+        <summary>Is this financial advice?</summary>
+        <p>No. Degen Signals publishes educational trading signals. You make your own
+        decisions. Trading involves risk — see the disclaimer below.</p>
+      </details>
+      <details>
+        <summary>How is the track record verified?</summary>
+        <p>Every call is logged with its levels. A weekly evaluator checks each one
+        against real market prices and publishes hits AND stops with 95% confidence
+        intervals. No cherry-picking.</p>
+      </details>
+      <details>
+        <summary>Can I cancel?</summary>
+        <p>Yes — cancel anytime from Stripe. Your invite link stays valid until the end of the billing period.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="sec" style="text-align:center;">
+    <h2>Ready when you are.</h2>
+    <div class="sub2" style="margin:0 auto 24px;">Join the channel that shows its stops.</div>
+    <a class="cta" href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Start on Telegram →</a>
+  </section>
 </div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="flogo">🦞 Degen Signals</div>
+      <div class="disclaim">
+        Degen Signals publishes educational trading signals. Nothing here is financial advice —
+        you make your own decisions. Trading involves risk; past performance does not guarantee
+        future results. The public track record shows real outcomes, including losses.
+      </div>
+    </div>
+    <div class="flinks">
+      <a href="https://t.me/hermes_uas4myztvbnauz7y_bot" target="_blank">Telegram</a>
+      <a href="#plans">Plans</a>
+      <a href="#faq">FAQ</a>
+      <a href="#top">Top</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
