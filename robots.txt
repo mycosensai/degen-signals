@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mycosensai.github.io/degen-signals/sitemap.xml

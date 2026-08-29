@@ -1,0 +1,17 @@
+{
+  "name": "Degen Signals",
+  "short_name": "Degen Signals",
+  "description": "10 ranked calls a day with entry, stop, target and R:R. Public, verifiable track record.",
+  "start_url": "/degen-signals/",
+  "display": "standalone",
+  "background_color": "#07090f",
+  "theme_color": "#4fc3f7",
+  "icons": [
+    {
+      "src": "/degen-signals/og-square.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
